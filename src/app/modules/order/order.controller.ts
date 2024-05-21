@@ -1,20 +1,56 @@
 import { Request, Response } from 'express'
 import { OrderService } from './order.service'
+import { ProductModel } from '../product/product.model'
+import { Oorder } from './order.interface'
 
 // // 1.Create a New Order
 // // Endpoint: /api/orders
-
+// start
 const createOrder = async (req: Request, res: Response) => {
   try {
     const { order: orderData } = req.body
+    const product = await ProductModel.findById(orderData.productId)
 
-    const result = await OrderService.createOrderIntoDb(orderData)
+    if (!product) {
+      res.status(500).json({
+        success: false,
+        message: 'Order not found',
+      })
+    }
 
-    res.status(200).json({
-      success: true,
-      message: 'order created successfully!',
-      data: result,
-    })
+    if (product !== null) {
+      if (product.inventory.quantity < orderData.quantity) {
+        res.status(500).json({
+          success: false,
+          message: 'Insufficient quantity available in inventory',
+        })
+      } else {
+        const newQuantity = (product.inventory.quantity -= orderData.quantity)
+
+        const order: Oorder = {
+          email: orderData.email as string,
+          productId: product.id as string,
+          price: product.price as number,
+          quantity: newQuantity as number,
+        }
+
+        await OrderService.updateProductAfterCreateOrder(
+          product.id,
+          newQuantity,
+        )
+
+        const result = await OrderService.createOrderIntoDb(order)
+
+        res.status(200).json({
+          success: true,
+          message: 'order created successfully!',
+          data: result,
+        })
+      }
+    }
+
+    // const result = await OrderService.createOrderIntoDb(orderData)
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({

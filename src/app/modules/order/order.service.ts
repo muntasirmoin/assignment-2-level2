@@ -1,3 +1,4 @@
+import { ProductModel } from '../product/product.model'
 import { Oorder } from './order.interface'
 import { OrderModel } from './order.model'
 
@@ -27,8 +28,22 @@ const getSingleOrderByEmail = async (email: string) => {
   return result
 }
 
+// bonos mark work
+const updateProductAfterCreateOrder = async (id: string, Quantity: number) => {
+  const result = await ProductModel.updateOne(
+    { _id: id },
+    {
+      'inventory.quantity': Quantity,
+      'inventory.inStock': Quantity > 0,
+    },
+  )
+
+  return result
+}
+
 export const OrderService = {
   createOrderIntoDb,
   getAllOrders,
   getSingleOrderByEmail,
+  updateProductAfterCreateOrder,
 }

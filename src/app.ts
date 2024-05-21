@@ -15,6 +15,13 @@ app.use('/api/products', ProductRoutes)
 // // Endpoint: /api/orders
 app.use('/api/orders', orderRoutes)
 
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  })
+})
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!')
 })
