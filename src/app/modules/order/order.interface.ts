@@ -11,3 +11,9 @@ export type Oorder = {
   price: number
   quantity: number
 }
+
+// validate
+export type UpdateProductParams = {
+  id: string
+  Quantity: number
+}

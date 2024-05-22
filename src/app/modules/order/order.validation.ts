@@ -9,4 +9,10 @@ const OrderSchemaValidation = z.object({
   quantity: z.number(),
 })
 
-export { OrderSchemaValidation }
+//
+const UpdateProductValidation = z.object({
+  id: z.string(),
+  Quantity: z.number(),
+})
+
+export { OrderSchemaValidation, UpdateProductValidation }

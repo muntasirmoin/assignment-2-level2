@@ -2,7 +2,10 @@ import { Request, Response } from 'express'
 import { OrderService } from './order.service'
 import { ProductModel } from '../product/product.model'
 import { Oorder } from './order.interface'
-import { OrderSchemaValidation } from './order.validation'
+import {
+  OrderSchemaValidation,
+  UpdateProductValidation,
+} from './order.validation'
 
 // // 1.Create a New Order
 // // Endpoint: /api/orders
@@ -32,17 +35,37 @@ const createOrder = async (req: Request, res: Response) => {
           email: orderData.email as string,
           productId: product.id as string,
           price: product.price as number,
-          quantity: newQuantity as number,
+          quantity: orderData.quantity as number,
         }
 
-        await OrderService.updateProductAfterCreateOrder(
-          product.id,
-          newQuantity,
-        )
+        //
+        const validatedParams = UpdateProductValidation.parse({
+          id: product.id,
+          Quantity: newQuantity,
+        })
+
+        // // Call the service function with the validated parameters
+        // await OrderService.updateProductAfterCreateOrder(
+        //   validatedParams.id,
+        //   validatedParams.Quantity,
+        // )
+        //
+
+        // await OrderService.updateProductAfterCreateOrder(
+        //   product.id,
+        //   newQuantity,
+        // )
         // order data validation using zod
         const zodParseOrder = OrderSchemaValidation.parse(order)
 
         const result = await OrderService.createOrderIntoDb(zodParseOrder)
+        if (result) {
+          // Call the service function with the validated parameters
+          await OrderService.updateProductAfterCreateOrder(
+            validatedParams.id,
+            validatedParams.Quantity,
+          )
+        }
 
         res.status(200).json({
           success: true,
