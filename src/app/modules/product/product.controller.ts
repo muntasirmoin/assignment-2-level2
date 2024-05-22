@@ -9,7 +9,7 @@ import {
 // 1. Create a New Product
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const { product: productData } = req.body
+    const productData = req.body
     // data validation using zod
     const zodParseProductData = PproductSchemaValidation.parse(productData)
 
@@ -86,7 +86,7 @@ const updateProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params
     //
-    const { product: productData } = req.body
+    const productData = req.body
     // data validation using zod
     const zodParseProductDataUpdate =
       UpdateProductSchemaValidation.parse(productData)

@@ -12,7 +12,7 @@ import {
 // start
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const { order: orderData } = req.body
+    const orderData = req.body
     const product = await ProductModel.findById(orderData.productId)
 
     if (!product) {
