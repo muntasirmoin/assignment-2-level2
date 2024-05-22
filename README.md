@@ -1,5 +1,9 @@
 # Way to run the application locally.
 
+## to create order use { "order": { post data..... to postman}}
+
+## to create product use {"product: {post data.... to postman }}
+
 ### - Clone the github repository
 
 ### - Install dependency
