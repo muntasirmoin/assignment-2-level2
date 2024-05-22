@@ -38,32 +38,21 @@ const createOrder = async (req: Request, res: Response) => {
           quantity: orderData.quantity as number,
         }
 
-        //
-        const validatedParams = UpdateProductValidation.parse({
+        // updateProduct data validation using zod
+        const zodValidateUpdateProduct = UpdateProductValidation.parse({
           id: product.id,
           Quantity: newQuantity,
         })
 
-        // // Call the service function with the validated parameters
-        // await OrderService.updateProductAfterCreateOrder(
-        //   validatedParams.id,
-        //   validatedParams.Quantity,
-        // )
-        //
-
-        // await OrderService.updateProductAfterCreateOrder(
-        //   product.id,
-        //   newQuantity,
-        // )
         // order data validation using zod
         const zodParseOrder = OrderSchemaValidation.parse(order)
 
         const result = await OrderService.createOrderIntoDb(zodParseOrder)
         if (result) {
-          // Call the service function with the validated parameters
+          // Call update here
           await OrderService.updateProductAfterCreateOrder(
-            validatedParams.id,
-            validatedParams.Quantity,
+            zodValidateUpdateProduct.id,
+            zodValidateUpdateProduct.Quantity,
           )
         }
 
