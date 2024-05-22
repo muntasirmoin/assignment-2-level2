@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { OrderService } from './order.service'
 import { ProductModel } from '../product/product.model'
 import { Oorder } from './order.interface'
+import { OrderSchemaValidation } from './order.validation'
 
 // // 1.Create a New Order
 // // Endpoint: /api/orders
@@ -38,8 +39,10 @@ const createOrder = async (req: Request, res: Response) => {
           product.id,
           newQuantity,
         )
+        // order data validation using zod
+        const zodParseOrder = OrderSchemaValidation.parse(order)
 
-        const result = await OrderService.createOrderIntoDb(order)
+        const result = await OrderService.createOrderIntoDb(zodParseOrder)
 
         res.status(200).json({
           success: true,
