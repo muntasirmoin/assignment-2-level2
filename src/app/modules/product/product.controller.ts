@@ -1,14 +1,18 @@
 import { Request, Response } from 'express'
 import { ProductServices } from './product.service'
-// import mongoose, { Types } from 'mongoose'
+import { PproductSchemaValidation } from './product.validation'
+// import { z } from 'zod'
 
 // create a product
 // 1. Create a New Product
 const createProduct = async (req: Request, res: Response) => {
   try {
     const { product: productData } = req.body
+    // data validation using zod
+    const zodParseProductData = PproductSchemaValidation.parse(productData)
 
-    const result = await ProductServices.createProductIntoDB(productData)
+    const result =
+      await ProductServices.createProductIntoDB(zodParseProductData)
 
     res.status(200).json({
       success: true,

@@ -18,6 +18,6 @@ export type Pproduct = {
   price: number
   category: string
   tags: string[]
-  variants: Pvariants
+  variants: Pvariants[]
   inventory: Pinventory
 }
