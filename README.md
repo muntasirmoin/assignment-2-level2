@@ -1,8 +1,8 @@
-### Way to run the application locally.
+# Way to run the application locally.
 
-# - Clone the github repository
+### - Clone the github repository
 
-# - Install dependency
+### - Install dependency
 
 1. express
 2. mongoose
@@ -11,11 +11,11 @@
 5. zod
 6. TypeScript
 
-# - SetUp database
+### - SetUp database
 
-# - Start server with command
+### - Start server with command
 
 1.  npm run start:dev
 2.  Check package.json--> "scripts" for more required command
 
-# - server's root path: http://localhost:3000/
+### - server's root path: http://localhost:3000/

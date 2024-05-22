@@ -1,4 +1,4 @@
-// / Create the variants validation schema
+// / Create the zod validation schema
 
 import { z } from 'zod'
 

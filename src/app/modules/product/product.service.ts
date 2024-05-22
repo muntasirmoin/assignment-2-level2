@@ -29,10 +29,14 @@ const getSingleProductById = async (id: string) => {
 //
 // 4. Update Product Information
 // Endpoint: /api/products/:productId
-const updateProductById = async (id: string) => {
+const updateProductById = async (id: string, inventoryQuantity: number) => {
   const result = await ProductModel.updateOne(
     { _id: id },
-    { $inc: { 'inventory.quantity': -1 } },
+    // { $inc: { 'inventory.quantity': -1 } },
+    {
+      'inventory.quantity': inventoryQuantity,
+      'inventory.inStock': inventoryQuantity > 0,
+    },
   )
   return result
 }

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { ProductServices } from './product.service'
 import { PproductSchemaValidation } from './product.validation'
-// import { z } from 'zod'
 
 // create a product
 // 1. Create a New Product
@@ -83,8 +82,18 @@ const getSingleProduct = async (req: Request, res: Response) => {
 const updateProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params
+    //
+    const { product: productData } = req.body
+    // data validation using zod
+    const zodParseProductDataUpdate =
+      PproductSchemaValidation.parse(productData)
 
-    const result = await ProductServices.updateProductById(productId)
+    //
+
+    const result = await ProductServices.updateProductById(
+      productId,
+      zodParseProductDataUpdate.inventory.quantity,
+    )
     const resultAfterupdate =
       await ProductServices.getSingleProductById(productId)
 
@@ -160,7 +169,6 @@ const searchAProduct = async (req: Request, res: Response) => {
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    // console.log(err)
     res.status(500).json({
       success: false,
       message: err.message || 'Orders fetched error for user email',
