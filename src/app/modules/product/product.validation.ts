@@ -28,4 +28,27 @@ const PproductSchemaValidation = z.object({
   inventory: PinventorySchemaValidation,
 })
 
-export { PproductSchemaValidation }
+// update product validation
+const UpdateProductSchemaValidation = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  price: z.number().optional(),
+  category: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  variants: z
+    .array(
+      z.object({
+        type: z.string(),
+        value: z.string(),
+      }),
+    )
+    .optional(),
+  inventory: z
+    .object({
+      quantity: z.number(),
+      inStock: z.boolean(),
+    })
+    .optional(),
+})
+
+export { PproductSchemaValidation, UpdateProductSchemaValidation }

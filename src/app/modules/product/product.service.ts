@@ -1,5 +1,5 @@
 // import mongoose from 'mongoose'
-import { Pproduct } from './product.interface'
+import { Pproduct, UpdateProductInterface } from './product.interface'
 import { ProductModel } from './product.model'
 
 // create a product
@@ -29,15 +29,11 @@ const getSingleProductById = async (id: string) => {
 //
 // 4. Update Product Information
 // Endpoint: /api/products/:productId
-const updateProductById = async (id: string, inventoryQuantity: number) => {
-  const result = await ProductModel.updateOne(
-    { _id: id },
-    // { $inc: { 'inventory.quantity': -1 } },
-    {
-      'inventory.quantity': inventoryQuantity,
-      'inventory.inStock': inventoryQuantity > 0,
-    },
-  )
+const updateProductById = async (
+  id: string,
+  updateData: Partial<UpdateProductInterface>,
+) => {
+  const result = await ProductModel.updateOne({ _id: id }, { $set: updateData })
   return result
 }
 

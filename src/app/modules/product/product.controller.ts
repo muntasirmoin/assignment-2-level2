@@ -1,6 +1,9 @@
 import { Request, Response } from 'express'
 import { ProductServices } from './product.service'
-import { PproductSchemaValidation } from './product.validation'
+import {
+  PproductSchemaValidation,
+  UpdateProductSchemaValidation,
+} from './product.validation'
 
 // create a product
 // 1. Create a New Product
@@ -86,13 +89,13 @@ const updateProduct = async (req: Request, res: Response) => {
     const { product: productData } = req.body
     // data validation using zod
     const zodParseProductDataUpdate =
-      PproductSchemaValidation.parse(productData)
+      UpdateProductSchemaValidation.parse(productData)
 
     //
 
     const result = await ProductServices.updateProductById(
       productId,
-      zodParseProductDataUpdate.inventory.quantity,
+      zodParseProductDataUpdate,
     )
     const resultAfterupdate =
       await ProductServices.getSingleProductById(productId)
